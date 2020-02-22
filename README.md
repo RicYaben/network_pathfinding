@@ -19,9 +19,8 @@ It is important for you to have all this documents stored in the same folder, as
 
 ## GRAPHIC VIEW
 
-Once you have run the command or started the python script on your preferred way, after few seconds, depending on the amount of vertices and connections there are in the network, the script will open the view on your browser on a local server, but it does not listen to any connection, therefore you won't be able to reopen it on a new tab or access the server from any other source. If you close it, and you want to see it working again, you will need to rerun the script.
-
-Once it is open, click on the button on the bottom-right side with the algorithm chosen as name (BFS, DFS...) and it will start showing the path taken.
+Once you have run the command or started the python script on your preferred way, you will be presented with a simple command line menu in where you can choose the algorithm to use, the starting point and a goal if desired.
+You can also preview the graph with the input `prev`, see the node links from the command line input `graph`, and of course, quit with one of the inputs `q`, `Q`, `Exit` or `exit` or by pressing `Ctrl+C` from your keyboard.
 
 
 
