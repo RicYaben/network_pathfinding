@@ -1,4 +1,5 @@
 from collections import defaultdict
+from heapq import *
 
 class Graph:
 	def __init__(self , vertices):
@@ -23,12 +24,12 @@ class Graph:
 		return len(self.graph)
 
 	def get_graph(self):
-		return [(i,self.graph[i]) for i in self.graph if self.graph[i] != self.graph.default_factory()]
+		return sorted([ [i,self.graph[i]] for i in self.graph if self.graph[i] != self.graph.default_factory()])
 
 	def get_algs(self):
-		return ['BFS', 'DFS']
+		return ['BFS', 'DFS', 'dijkstra']
 
-	def BFS(self, start, goal = None):
+	def BFS(self, start, goal):
 		#make a list of length equal to the amount 
 		#vertices inside our graph with a falsy value for each entry.
 		#this list represents the whole amount of vertices that haven't
@@ -68,7 +69,7 @@ class Graph:
 			return path
 
 		else:
-
+			print(f'Goal: {goal}')
 			while queue:
 				start = queue.pop(0)
 				path.append(start)
@@ -95,3 +96,26 @@ class Graph:
 		self.DFSUtil(v, visited, path)
 		return path
 
+	def dijkstra( self,g, start, destination ):
+
+		q, seen, mins = [(0,start,[])], set(), { start:0}
+		while q:
+			( cost, v1, path) = heappop(q)
+
+			if v1 not in seen:
+				seen.add(v1)
+				path = [v1] + path
+
+				if v1 == destination:
+					return(path)
+
+				for c, v2 in g.get(v1, ()):
+					if v2 in seen:
+						continue
+					prev = mins.get(v2, None)
+					next = cost + c
+					if prev is None or next < prev:
+						mins[v2] = next
+						heappush(q, (next, v2, path))
+
+		return ([])
