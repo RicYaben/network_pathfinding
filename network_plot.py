@@ -224,7 +224,6 @@ class Network_plot:
                     print('\033[93m[ERROR] Wrong input')
                     print(f'>>> {e}\033[0m')
                     print('----------')
-                    raise
 
 def main():
 
