@@ -1,5 +1,6 @@
 from collections import defaultdict
-from heapq import *
+from heapq import heappush, heappop
+from itertools import count
 
 class Graph:
 	def __init__(self , vertices):
@@ -27,7 +28,7 @@ class Graph:
 		return sorted([ [i,self.graph[i]] for i in self.graph if self.graph[i] != self.graph.default_factory()])
 
 	def get_algs(self):
-		return ['BFS', 'DFS', 'dijkstra']
+		return ['BFS', 'DFS', 'dijkstra', 'A*']
 
 	def BFS(self, start, goal):
 		#make a list of length equal to the amount 
@@ -119,3 +120,83 @@ class Graph:
 						heappush(q, (next, v2, path))
 
 		return ([])
+
+
+	def a_star(self, g, start, destination, nodes):
+		''' Return a list of nodes ordered in a shortest path from source
+		destination using A* slgorithm or nothing if the path does not
+		exists.
+		'''
+
+		def heuristic(v, e):
+
+			x0, y0 = nodes[v]['pos']
+			x1, y1 = nodes[e]['pos']
+
+			return ( ( x0 - x1 )**2 + ( y0 - y1 )**2 )** 0.5
+
+		# A queue `q`that stores the priority, current node, distance to the
+		# destination and parent.
+		# Using a heapq to preserve the priority.
+		# The counter is used to prevent circular dependencies.
+		
+		c = count()
+		q = [ (0, next(c), start, 0, None) ]
+
+		# enq distance from the discovered nodes to the destination
+
+		enq = {}
+		exp = {}
+
+		while q:
+			_,__,curr_node, dist, parent = heappop(q)
+
+			# Check if we are at the destination
+			if curr_node == destination:
+				path = [curr_node]
+				node = parent
+
+				while node is not None:
+					path.append(node)
+					node = exp[node]
+				path.reverse()
+				return path
+
+			# Check if we have already visited the current node
+			if curr_node in exp:
+
+				# If we have, but the current node is empty continue
+				# with the next
+				if exp[curr_node] is None:
+					continue
+
+				# enq the cost and the heuristic distance
+				qcost, h = enq[curr_node]
+				if qcost < dist:
+					continue
+
+			# Accept the current path and add the current node
+			# as the next parent
+			exp[curr_node] = parent
+
+			# iterate through the items
+			for distance, edge in g[curr_node]:
+				# declare the cost of the current node
+				ncost = dist + distance
+				
+				if edge in enq:
+					qcost, h = enq[edge]
+
+					# check if the qcost is lower
+					# than the ncost, and if so, the
+					# edge won't be queued
+					if qcost <= ncost:
+						continue
+
+				else:
+					h = heuristic(edge, destination)
+
+				enq[edge] = ncost, h
+				heappush(q, (ncost + h, next(c), edge, ncost, curr_node) )
+
+		return []
