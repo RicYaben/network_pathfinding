@@ -21,5 +21,5 @@ PROBABILITY_OF_EDGE = 0.125
 #START = 18
 
 #### ALGORITHM TO USE
-## BFS | DFS | dijkstra  | A* (NYI)
-#ALGORITHM = "dijkstra"
+## BFS | DFS | dijkstra  | A*
+#ALGORITHM = "A*"
