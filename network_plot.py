@@ -1,10 +1,8 @@
-# libraries
 import plotly.graph_objects as go
 import networkx as nx
 from graph import *
 from globals import *
 import random
-import math
 import sys
 import os
 
@@ -14,6 +12,7 @@ class Network_plot:
 
         #set the current algorithm
         self.algorithm = algorithm
+
         #Initialize the graph and the network geometric graph
         self.geometric_graph = nx.random_geometric_graph(vertices, prob_link)
         self.graph = Graph(vertices)
@@ -36,11 +35,14 @@ class Network_plot:
                 x0,y0 = self.geometric_graph.nodes[v]['pos']
                 x1,y1 = self.geometric_graph.nodes[edge]['pos']
 
-                distance = math.sqrt( ( x0 - x1 )**2 + ( y0 - y1 )**2 )
+                distance = ( ( x0 - x1 )**2 + ( y0 - y1 )**2 )** 0.5
 
                 g[v].append(( distance, edge))
 
         return g
+
+    def get_nodes(self):
+        return self.geometric_graph.nodes
 
     def _populate_graph(self):
 
@@ -176,6 +178,11 @@ class Network_plot:
             path = self.graph.dijkstra( graph, start, goal)
             path.reverse()
             return path
+        elif algorithm == 'A*':
+            graph = self.get_distances()
+            nodes = self.get_nodes()
+            path = self.graph.a_star(graph, start, goal, nodes)
+            return path
 
 
     def show_menu(self):
@@ -217,6 +224,7 @@ class Network_plot:
                     print('\033[93m[ERROR] Wrong input')
                     print(f'>>> {e}\033[0m')
                     print('----------')
+                    raise
 
 def main():
 
@@ -241,5 +249,3 @@ if __name__ == '__main__':
             sys.exit(0)
         except SystemExit:
             os._exit(0)
-
-    
