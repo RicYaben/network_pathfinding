@@ -1,4 +1,4 @@
-![alt text](https://github.com/RicYaben/network_pathfinding/blob/master/BFS.gif "BFS")
+![alt text](https://github.com/RicYaben/network_pathfinding/blob/master/a*.gif "A*")
 
 # USAGE
 
